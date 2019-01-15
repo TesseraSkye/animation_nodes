@@ -55,12 +55,28 @@ killer_client = None
 # Sets up dispatcher, which is used to map commands.
 
 
+class StopCode():
+
+    code_dict = {  # Use this to set up mapings
+
+        "0": "Closed normally."
+
+    }
+
+    def getStopCodeDef(self, stop_code):
+        stop_code = str(stop_code)
+        try:
+            return StopCode.code_dict[stop_code]
+        except KeyError:
+            return "Stop code does not exist."
+
+
 class Dispatch():
-    def printAll(unused_addr, text):
+    def printAll(self, unused_addr, text):
         print(text)
 
-# The shutdown routine used to stop the server. Has stopcodes, default safe is 0.
-    def shutdown(unused_addr, code):
+    # The shutdown routine used to stop the server. Has stopcodes, default safe is 0.
+    def shutdown(self, unused_addr, code):
 
         stop_code_def = StopCode.getStopCodeDef(code)
         print(
@@ -73,26 +89,6 @@ class Dispatch():
         )
 
 
-class StopCode():
-
-    code_dict = {  # Use this to set up mapings
-
-        "0": "Closed normally."
-
-    }
-
-    def getStopCodeDef(stop_code):
-        stop_code = str(stop_code)
-        try:
-            return StopCode.code_dict[stop_code]
-        except KeyError:
-            return "Stop code does not exist."
-
-# mapping happens here
-# disp.map("/nimbus", Dispatch.printAll)#placeholder
-
-
-########
 # Redirect for server shutdown.
 disp.map(
     "/nimbus/server/{server_identifier}/stop".format(server_uid), Dispatch.shutdown)
