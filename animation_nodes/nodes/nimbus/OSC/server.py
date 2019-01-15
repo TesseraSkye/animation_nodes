@@ -1,18 +1,16 @@
-####################
-# import pyosc so future imports are easier
-# from....libs it the library at top level
-from ....libs.PythonOSC import pythonosc
-# import the server resources from the osc module
 from pythonosc import osc_server, dispatcher
-# import the resources for the killer client
 from pythonosc import udp_client
-
-# import for up-list of osc servers.
 from .server_list import up_tools
-
-# std lib imports
 import argparse
 from threading import Thread
+
+
+# import the server resources from the osc module
+# import the resources for the killer client
+
+# import for up-list of osc servers.
+
+# std lib imports
 ####################
 
 
@@ -287,4 +285,30 @@ def stop(stop_code=0):
     elif server == None:
         print("Server has never been started!")
 
+
 ############################
+if __name__ == "__main__":
+    import os
+    import sys
+    from os.path import dirname, join, abspath, basename
+    # temporarily sets main package at current location, so that it can be itterated.
+    main_package = dirname(abspath(__file__))
+    # Iterates until it finds nimbus_vis or has run 10 times #10 subdirs max
+    iter = 0
+    #
+    while basename(main_package) != "animation_nodes" and iter in range(10):
+        main_package = dirname(main_package)
+        iter = iter + 1
+    #
+    if not main_package in sys.path:
+        sys.path.append(main_package)
+        print(main_package + " appended to sys path")
+    #
+    library = join(main_package, "libs")
+    #
+    if not library in sys.path:
+        sys.path.append(library)
+        print(library + " appended to sys path")
+    #
+    os.chdir(main_package)  # THIS IS VERY IMPORTANT AND FIXES EVERYTHING
+####################
