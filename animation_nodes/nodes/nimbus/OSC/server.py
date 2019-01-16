@@ -1,18 +1,15 @@
+# import the server list tools
+from server_list import up_tools
+# import the resources for the server
 from pythonosc import osc_server, dispatcher
-from pythonosc import udp_client
-from .server_list import up_tools
-import argparse
-from threading import Thread
-
-
-# import the server resources from the osc module
 # import the resources for the killer client
-
+from pythonosc import udp_client
 # import for up-list of osc servers.
 
 # std lib imports
 ####################
-
+from threading import Thread
+import argparse
 
 ####DECLARATIONS####
 a_parser = argparse.ArgumentParser()
@@ -94,7 +91,7 @@ def setAddress(ip="", port=""):
     if None is entered, it defaults to\n
     an ip of '127.0.0.1' and a port of 5505.\n
     if one or both of the arguments is left blank,\n
-    that parameter will remain unchanged. 
+    that parameter will remain unchanged.
     """
 
     global next_address
@@ -287,6 +284,7 @@ def stop(stop_code=0):
 
 
 ############################
+# General registration for most modules
 if __name__ == "__main__":
     import os
     import sys
@@ -304,11 +302,12 @@ if __name__ == "__main__":
         sys.path.append(main_package)
         print(main_package + " appended to sys path")
     #
-    library = join(main_package, "libs")
+    library = join(main_package, "libs", "nimbus_libs")
     #
     if not library in sys.path:
         sys.path.append(library)
         print(library + " appended to sys path")
-    #
-    os.chdir(main_package)  # THIS IS VERY IMPORTANT AND FIXES EVERYTHING
-####################
+    ####################
+
+    # file specific reg
+    os.chdir(dirname(abspath(__file__)))
