@@ -3,8 +3,7 @@ import argparse
 from threading import Thread
 from pythonosc import udp_client
 from pythonosc import osc_server, dispatcher
-from os.path import join, dirname, abspath
-from server_list import up_tools
+from server_list import up_tools  # pylint: disable=E0401 ###most useful thing! Disables module finding bug present in pylint
 from pythonosc import osc_server, dispatcher
 from pythonosc import udp_client
 # std lib imports
@@ -290,7 +289,8 @@ if __name__ == "__main__":
     import sys
     from os.path import dirname, join, abspath, basename
     # temporarily sets main package at current location, so that it can be itterated.
-    main_package = dirname(abspath(__file__))
+    parent_dir = dirname(abspath(__file__))
+    main_package = parent_dir
     # Iterates until it finds nimbus_vis or has run 10 times #10 subdirs max
     iter = 0
     #
@@ -307,7 +307,9 @@ if __name__ == "__main__":
     if not library in sys.path:
         sys.path.append(library)
         print(library + " appended to sys path")
-    ####################
-
+    #
     # file specific reg
-    os.chdir(dirname(abspath(__file__)))
+#    os.chdir(parent_dir)
+#    if not parent_dir in sys.path:
+#        sys.path.append(parent_dir)
+#        print(parent_dir + " appended to sys path")
