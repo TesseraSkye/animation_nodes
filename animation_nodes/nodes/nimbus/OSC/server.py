@@ -1,15 +1,15 @@
 # import the server list tools
+import argparse
+from threading import Thread
+from pythonosc import udp_client
+from pythonosc import osc_server, dispatcher
 from os.path import join, dirname, abspath
 from server_list import up_tools
-# import the resources for the server
 from pythonosc import osc_server, dispatcher
-# import the resources for the killer client
 from pythonosc import udp_client
-# import for up-list of osc servers.
 # std lib imports
-####################
+####
 from threading import Thread
-import argparse
 
 ####DECLARATIONS####
 a_parser = argparse.ArgumentParser()
