@@ -1,5 +1,6 @@
 # import the server list tools
-from server_list import up_tools
+from os.path import join, dirname, abspath
+from .serverList import up_tools
 # import the resources for the server
 from pythonosc import osc_server, dispatcher
 # import the resources for the killer client
@@ -180,7 +181,7 @@ def getAddress(text=""):
     """
     Shortener function for getCurrent()
     """
-    return getCurrent(text)
+    return getCurrentAddress(text)
 
 ############################
 
@@ -302,7 +303,7 @@ if __name__ == "__main__":
         sys.path.append(main_package)
         print(main_package + " appended to sys path")
     #
-    library = join(main_package, "libs", "nimbus_libs")
+    library = join(main_package, "libs", "nimbusLibs")
     #
     if not library in sys.path:
         sys.path.append(library)
