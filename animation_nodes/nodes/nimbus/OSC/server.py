@@ -368,7 +368,7 @@ if __name__ == "__main__":
         sys.path.append(main_package)
         print(main_package + " appended to sys path")
     #
-    library = join(main_package, "libs", "nimbus_libs")
+    library = join(main_package, "libs")
     #
     if not library in sys.path:
         sys.path.append(library)
