@@ -11,6 +11,13 @@ from server_list import up_tools  # pylint: disable=E0401 ###most useful thing! 
 import argparse
 from threading import Thread
 
+# Node imports
+import bpy
+
+from ....events import propertyChanged
+from ....base_types import AnimationNode
+####
+
 ####DECLARATIONS####
 a_parser = argparse.ArgumentParser()
 disp = dispatcher.Dispatcher()
@@ -281,6 +288,50 @@ def stop(stop_code=0):
         print("Server has never been started!")
 
 
+############NODE############
+class OSCServerNode(bpy.types.Node, AnimationNode):
+    bl_idname = "nn_OSCServerNode"
+    bl_label = " OSC Server"
+    searchTags = ["OSC"]
+
+    server_up = bpy.props.BoolProperty(
+        name="Server is up",
+        description="If checked, the server is running. Unchecking stops the server.",
+        default=False,
+        options={},
+        update=)
+
+    def create(self):
+        bpy.props.StringProperty(  # ip
+            name="ip",
+            description="""
+                The ip address used when starting the server.\n
+                Don't use an IP over 126.255.255.255 except for lopback.\n
+                Loopback (internal only) starts at 127.0.0.1, which is the default value.\n
+                """,
+            default="127.0.0.1",
+            maxlen=15,
+            options={},
+            update=propertyChanged,
+        )
+        bpy.props.IntProperty(  # port
+            name="ip",
+            description="""
+                The port used when starting the server.\n
+                Integer from 1 to 65535.\n
+                Defaults to 5505.\n
+                """,
+            default=5505,
+            min=1,
+            max=65535,
+            soft_min=1,
+            soft_max=65535,
+            options={},
+            update=propertyChanged,
+        )
+
+
+############################
 ############################
 # General registration for most modules
 if __name__ == "__main__":
