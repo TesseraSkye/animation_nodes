@@ -66,9 +66,6 @@ def getStopCodeDef(stop_code):
         return "Stop code does not exist."
 
 
-def dispPrintAll(unused_addr, text):
-    print(text)
-
 # The shutdown routine used to stop the server. Has stopcodes, default safe is 0.
 
 
