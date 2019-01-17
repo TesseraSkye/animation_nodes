@@ -1,13 +1,14 @@
+# pythonosc
+from pythonosc import osc_server, dispatcher
+from pythonosc import udp_client
+
 # import the server list tools
-import argparse
-from threading import Thread
-from pythonosc import udp_client
-from pythonosc import osc_server, dispatcher
 from server_list import up_tools  # pylint: disable=E0401 ###most useful thing! Disables module finding bug present in pylint
-from pythonosc import osc_server, dispatcher
-from pythonosc import udp_client
+
+
 # std lib imports
 ####
+import argparse
 from threading import Thread
 
 ####DECLARATIONS####
@@ -272,7 +273,8 @@ def stop(stop_code=0):
         if isUp() == True:
             killer_client = udp_client.SimpleUDPClient(
                 up_address[0], up_address[1])
-            print("Sending Kill Signal...")
+            print("Sending Kill Signal to server on {0}...".format(
+                up_address[0] + up_address[1]))
             killer_client.send_message(
                 "/nimbus/server/{server_identifier}/stop".format(uid), str(stop_code))
         elif isUp() == False:
@@ -308,8 +310,3 @@ if __name__ == "__main__":
         sys.path.append(library)
         print(library + " appended to sys path")
     #
-    # file specific reg
-#    os.chdir(parent_dir)
-#    if not parent_dir in sys.path:
-#        sys.path.append(parent_dir)
-#        print(parent_dir + " appended to sys path")
