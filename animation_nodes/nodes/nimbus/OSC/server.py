@@ -294,12 +294,18 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
     bl_label = " OSC Server"
     searchTags = ["OSC"]
 
-    server_up = bpy.props.BoolProperty(
-        name="Server is up",
-        description="If checked, the server is running. Unchecking stops the server.",
-        default=False,
-        options={},
-        update=)
+    on_off_states = (
+        ("OFF", "Off", "Server State: Off"),
+        ("ON", "On", "Server State: On"),
+    )
+
+    statusChanged = bpy.props.EnumProperty(
+        name="Server State",
+        description="Toggle the server's state",
+        items=on_off_states,
+        default="OFF",
+        update="propertyChanged",
+    )
 
     def create(self):
         bpy.props.StringProperty(  # ip
@@ -329,6 +335,16 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
             options={},
             update=propertyChanged,
         )
+
+    def draw(self, context, layout, text):
+        layout.prop(self, "is_on_enum", text=text)
+
+    def execute(self, ip, port, server_state):
+        if ip is None or port is None or server_state is None:
+            return
+
+        if self.statusChanged:
+            print("Changed")
 
 
 ############################
