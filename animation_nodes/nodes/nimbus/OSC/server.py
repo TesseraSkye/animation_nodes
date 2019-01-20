@@ -290,7 +290,7 @@ def stop(stop_code=0):
 
 ############NODE############
 class OSCServerNode(bpy.types.Node, AnimationNode):
-    bl_idname = "nn_OSCServerNode"
+    bl_idname = "an_OSCServerNode"
     bl_label = " OSC Server"
     searchTags = ["OSC"]
 
