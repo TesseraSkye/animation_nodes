@@ -207,9 +207,9 @@ def start():
     Can not be run if server is already up, will return False.\n
     Takes no arguments.\n
     Returns, as a list:\n
-    ---The server's status as a boolean\n
-    ---The Unique Identifier as an int\n
-    ---The ip and port as a nested list
+    ..The server's status as a boolean\n
+    ..The Unique Identifier as an int\n
+    ..The ip and port as a nested list
     """
     global uid
     global disp
@@ -295,23 +295,21 @@ def stop(stop_code=0):
 ############NODE############
 class OSCServerNode(bpy.types.Node, AnimationNode):
     bl_idname = "an_OSCServerNode"
-    bl_label = " OSC Server"
-    searchTags = ["OSC"]
+    bl_label = "OSC Server"
 
-    on_off_states = (
-        ("OFF", "Off", "Server State: Off"),
-        ("ON", "On", "Server State: On"),
-    )
-
-    statusChanged = bpy.props.EnumProperty(
-        name="server_state",
+    onOffState = bpy.props.EnumProperty(  # on - off toggle
+        items=[
+            ("off", "Off", "Server State: Off"),
+            ("on", "On", "Server State: On"),
+        ],
+        name="Server State",
         description="Toggle the server's state",
-        items=on_off_states,
-        default="OFF",
-        update="propertyChanged",
+        default="off",
+        options={"SKIP_SAVE"},
+        update=propertyChanged,
     )
 
-    optionIp = bpy.props.StringProperty(  # ip
+    setIp = bpy.props.StringProperty(  # ip
         name="Serving Ip",
         description="""
                The ip address used when starting the server.\n
@@ -323,7 +321,7 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         options={"SKIP_SAVE"},
         update=propertyChanged,
     )
-    optionPort = bpy.props.IntProperty(  # port
+    setPort = bpy.props.IntProperty(  # port
         name="Serving port",
         description="""
                 The port used when starting the server.\n
@@ -343,15 +341,22 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         pass
 
     def draw(self, layout):
-        layout.prop(self, "optionIp")
-        layout.prop(self, "optionPort")
+        layout.prop(self, "onOffState")
+        layout.prop(self, "setIp")
+        layout.prop(self, "setPort")
 
     def execute(self):
 
-        if self.optionIp:
+        if self.onOffState.off:
+            stop()
+
+        if self.onOffState.on:
+            start()
+
+        if self.setIp:
             print("IP!")
 
-        if self.optionPort:
+        if self.setPort:
             print("PORT!!")
 
 
