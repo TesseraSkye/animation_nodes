@@ -1,6 +1,6 @@
 # pythonosc
-from ....nimbus_libs.pythonosc import osc_server, dispatcher
-from ....nimbus_libs.pythonosc import udp_client
+from pythonosc import osc_server, dispatcher
+from pythonosc import udp_client
 
 # import the server list tools
 from server_list import up_tools  # pylint: disable=E0401 ###most useful thing! Disables module finding bug present in pylint
@@ -350,27 +350,27 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
 ############################
 ############################
 # General registration for most modules
-# if __name__ == "__main__":
-#    import os
-#    import sys
-#    from os.path import dirname, join, abspath, basename
-#    # temporarily sets main package at current location, so that it can be itterated.
-#    parent_dir = dirname(abspath(__file__))
-#    main_package = parent_dir
-#    # Iterates until it finds nimbus_vis or has run 10 times #10 subdirs max
-#    iter = 0
-#    #
-#    while basename(main_package) != "animation_nodes" and iter in range(10):
-#        main_package = dirname(main_package)
-#        iter = iter + 1
-#    #
-#    if not main_package in sys.path:
-#        sys.path.append(main_package)
-#        print(main_package + " appended to sys path")
-#    #
-#    library = join(main_package, "libs", "nimbus_libs")
-#    #
-#    if not library in sys.path:
-#        sys.path.append(library)
-#        print(library + " appended to sys path")
-#    #
+ if __name__ == "__main__":
+    import os
+    import sys
+    from os.path import dirname, join, abspath, basename
+    # temporarily sets main package at current location, so that it can be itterated.
+    parent_dir = dirname(abspath(__file__))
+    main_package = parent_dir
+    # Iterates until it finds nimbus_vis or has run 10 times #10 subdirs max
+    iter = 0
+    #
+    while basename(main_package) != "animation_nodes" and iter in range(10):
+        main_package = dirname(main_package)
+        iter = iter + 1
+    #
+    if not main_package in sys.path:
+        sys.path.append(main_package)
+        print(main_package + " appended to sys path")
+    #
+    library = join(main_package, "nimbus_libs")
+    #
+    if not library in sys.path:
+        sys.path.append(library)
+        print(library + " appended to sys path")
+    #
