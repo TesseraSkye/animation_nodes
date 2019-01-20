@@ -10,6 +10,7 @@ from .server_list import up_tools  # pylint: disable=E0401 ###most useful thing!
 ####
 import argparse
 from threading import Thread
+import time
 
 # Node imports
 import bpy
@@ -281,6 +282,9 @@ def stop(stop_code=0):
                 up_address[0] + up_address[1]))
             killer_client.send_message(
                 "/nimbus/server/{server_identifier}/stop".format(uid), str(stop_code))
+            if isUp() == True:  # checks that the server actually stopped
+                time.sleep(1)
+                raise Exception("STOP FAILURE", "Server failed to stop!")
         elif isUp() == False:
             print("Server is already stopped.")
         return isUp()
@@ -294,18 +298,18 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
     bl_label = " OSC Server"
     searchTags = ["OSC"]
 
-#    on_off_states = (
-#        ("OFF", "Off", "Server State: Off"),
-#        ("ON", "On", "Server State: On"),
-#    )
+    on_off_states = (
+        ("OFF", "Off", "Server State: Off"),
+        ("ON", "On", "Server State: On"),
+    )
 
-#    statusChanged = bpy.props.EnumProperty(
-#        name="server_state",
-#        description="Toggle the server's state",
-#        items=on_off_states,
-#        default="OFF",
-#        update="propertyChanged",
-#    )
+    statusChanged = bpy.props.EnumProperty(
+        name="server_state",
+        description="Toggle the server's state",
+        items=on_off_states,
+        default="OFF",
+        update="propertyChanged",
+    )
 
     optionIp = bpy.props.StringProperty(  # ip
         name="Serving Ip",
