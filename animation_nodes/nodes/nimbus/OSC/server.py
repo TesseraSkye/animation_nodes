@@ -350,7 +350,7 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
 ############################
 ############################
 # General registration for most modules
- if __name__ == "__main__":
+if __name__ == "__main__":
     import os
     import sys
     from os.path import dirname, join, abspath, basename
