@@ -294,57 +294,61 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
     bl_label = " OSC Server"
     searchTags = ["OSC"]
 
-    on_off_states = (
-        ("OFF", "Off", "Server State: Off"),
-        ("ON", "On", "Server State: On"),
-    )
+#    on_off_states = (
+#        ("OFF", "Off", "Server State: Off"),
+#        ("ON", "On", "Server State: On"),
+#    )
 
-    statusChanged = bpy.props.EnumProperty(
-        name="Server State",
-        description="Toggle the server's state",
-        items=on_off_states,
-        default="OFF",
-        update="propertyChanged",
-    )
+#    statusChanged = bpy.props.EnumProperty(
+#        name="server_state",
+#        description="Toggle the server's state",
+#        items=on_off_states,
+#        default="OFF",
+#        update="propertyChanged",
+#    )
 
-    def create(self):
-        bpy.props.StringProperty(  # ip
-            name="ip",
-            description="""
-                The ip address used when starting the server.\n
-                Don't use an IP over 126.255.255.255 except for lopback.\n
-                Loopback (internal only) starts at 127.0.0.1, which is the default value.\n
-                """,
-            default="127.0.0.1",
-            maxlen=15,
-            options={},
-            update=propertyChanged,
-        )
-        bpy.props.IntProperty(  # port
-            name="ip",
-            description="""
+    optionIp = bpy.props.StringProperty(  # ip
+        name="Serving Ip",
+        description="""
+               The ip address used when starting the server.\n
+               Don't use an IP over 126.255.255.255 except for lopback.\n
+               Loopback (internal only) starts at 127.0.0.1, which is the default value.\n
+                        """,
+        default="127.0.0.1",
+        maxlen=15,
+        options={"SKIP_SAVE"},
+        update=propertyChanged,
+    )
+    optionPort = bpy.props.IntProperty(  # port
+        name="Serving port",
+        description="""
                 The port used when starting the server.\n
                 Integer from 1 to 65535.\n
                 Defaults to 5505.\n
                 """,
-            default=5505,
-            min=1,
-            max=65535,
-            soft_min=1,
-            soft_max=65535,
-            options={},
-            update=propertyChanged,
-        )
+        default=5505,
+        min=1,
+        max=65535,
+        soft_min=1,
+        soft_max=65535,
+        options={"SKIP_SAVE"},
+        update=propertyChanged,
+    )
 
-    def draw(self, context, layout, text):
-        layout.prop(self, "is_on_enum", text=text)
+    def create(self):
+        pass
 
-    def execute(self, ip, port, server_state):
-        if ip is None or port is None or server_state is None:
-            return
+    def draw(self, layout):
+        layout.prop(self, "optionIp")
+        layout.prop(self, "optionPort")
 
-        if self.statusChanged:
-            print("Changed")
+    def execute(self):
+
+        if self.optionIp:
+            print("IP!")
+
+        if self.optionPort:
+            print("PORT!!")
 
 
 ############################
