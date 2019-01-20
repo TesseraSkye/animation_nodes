@@ -3,7 +3,7 @@ from pythonosc import osc_server, dispatcher
 from pythonosc import udp_client
 
 # import the server list tools
-from server_list import up_tools  # pylint: disable=E0401 ###most useful thing! Disables module finding bug present in pylint
+from .server_list import up_tools  # pylint: disable=E0401 ###most useful thing! Disables module finding bug present in pylint
 
 
 # std lib imports
