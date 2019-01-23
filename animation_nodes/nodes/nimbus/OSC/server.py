@@ -86,13 +86,16 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         print([self.server, self.thread])
         print(
             """
+            Server {2} on {3} recieved kill code.\n
             Shutdown requested with stop code {0}.\n
             Code {0}: {1}\n
             Terminating...
-            """.format(code, self.getStopCodeDef(code))
+            """.format(code, self.getStopCodeDef(code), up_tools.getUID(self.up_address), self.up_address)
         )
-        while time.sleep(0.8) != None:
-            self.thread.join()
+        self.thread.join(timeout=0.8)
+        if self.thread.is_alive == False:
+            print("Server {} has been stopped!").format(
+                up_tools.pullAddress(self.up_address))
         if self.thread.is_alive == True:  # checks that the server actually stopped
             raise Exception("Looks like the server failed to stop!")
 
@@ -217,6 +220,8 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         ..The ip and port as a nested list
         """
 
+        print(self)
+
         temp_up_status = self.isUp()
         if temp_up_status == False or temp_up_status == None:
             if self.next_address[0] == None:
@@ -275,20 +280,24 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         Usage: stop(stop_code = 0)\n
         Returns self.isUp()
         """
-        self.killer_client = udp_client.SimpleUDPClient(
-            self.up_address[0], self.up_address[1])
-        print(
-            "Sending Kill Signal to server on {0} with UID {1}...".format(
-                [self.up_address[0], self.up_address[1]],
-                up_tools.getUID(self.up_address),
-            ),
-        )
-        self.killer_client.send_message(
-            "/blender/oscserver/{0}/stop".format(up_tools.getUID(self.up_address)), str(stop_code))
-        time.sleep(1)
-        # checks that the server actually stopped
-        if up_tools.getUID(self.up_address) != None:
-            raise Exception("STOP FAILURE", "Server failed to stop!")
+        if self.server != None:
+            self.killer_client = udp_client.SimpleUDPClient(
+                self.up_address[0], self.up_address[1])
+            print(
+                "Sending Kill Signal to server on {0} with UID {1}...".format(
+                    [self.up_address[0], self.up_address[1]],
+                    up_tools.getUID(self.up_address),
+                ),
+            )
+            self.killer_client.send_message(
+                "/blender/oscserver/{0}/stop".format(up_tools.getUID(self.up_address)), str(stop_code))
+            ####
+            time.sleep(1)
+            # checks that the server actually stopped
+            if up_tools.getUID(self.up_address) != None:
+                raise Exception("STOP FAILURE", "Server failed to stop!")
+        else:
+            print("Server doesn't appear to have been started!")
         ############################################
 
     #############################
@@ -359,19 +368,12 @@ class OSCServerNode(bpy.types.Node, AnimationNode):
         layout.prop(self, "propPort")
 
     def execute(self):
-
-        if self.state == "off":
-            self.stop()
-            pass
-
-        if self.state == "on":
-            self.start()
-            pass
+        pass
 
 
-            ############################
-            ############################
-            # General registration for most modules
+        ############################
+        ############################
+        # General registration for most modules
 if __name__ == "__main__":
     import os
     import sys
